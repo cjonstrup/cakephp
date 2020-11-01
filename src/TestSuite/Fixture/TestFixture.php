@@ -274,7 +274,7 @@ class TestFixture implements ConstraintsInterface, FixtureInterface, TableSchema
             return false;
         }
 
-        if (empty($this->import) && empty($this->fields)) {
+        if (!$this->managed()) {
             return true;
         }
 
@@ -309,7 +309,7 @@ class TestFixture implements ConstraintsInterface, FixtureInterface, TableSchema
             return false;
         }
 
-        if (empty($this->import) && empty($this->fields)) {
+        if (!$this->managed()) {
             return $this->truncate($connection);
         }
 
@@ -437,6 +437,16 @@ class TestFixture implements ConstraintsInterface, FixtureInterface, TableSchema
         }
 
         return true;
+    }
+
+    /**
+     * Returns if fixture imports schema or defines fields.
+     *
+     * @return bool
+     */
+    public function managed(): bool
+    {
+        return !empty($this->import) || !empty($this->fields);
     }
 
     /**
